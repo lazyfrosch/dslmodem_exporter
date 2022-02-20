@@ -16,6 +16,10 @@ func (t *Mbps) UnmarshalText(data []byte) error {
 	return nil
 }
 
+func (t Mbps) BitsPerSec() float64 {
+	return float64(t) * 1000 * 1000
+}
+
 // Decibel (dB) is a relative unit of measurement equal to one tenth of a bel (B).
 //
 // https://en.wikipedia.org/wiki/Decibel

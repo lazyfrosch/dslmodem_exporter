@@ -42,8 +42,4 @@ func TestClient_GetXDSLStatistics(t *testing.T) {
 	data, err := c.GetXDSLStatistics()
 	assert.NoError(t, err)
 	assert.NotNil(t, data)
-
-	status := &VDSLStatus{}
-	err = status.UnmarshalText(data)
-	assert.NoError(t, err)
 }

@@ -1,8 +1,8 @@
 package zyxel
 
 import (
-	"dslmodem-exporter/pkg/units"
 	"fmt"
+	"github.com/lazyfrosch/dslmodem_exporter/pkg/units"
 	"strconv"
 	"strings"
 	"time"

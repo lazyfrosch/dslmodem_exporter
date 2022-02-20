@@ -72,7 +72,7 @@ func (c *Client) Login() error {
 // GetXDSLStatistics returns the raw
 //
 //  /pages/systemMonitoring/xdslStatistics/GetxdslStatistics.html
-func (c *Client) GetXDSLStatistics() ([]byte, error) {
+func (c *Client) GetXDSLStatistics() (*VDSLStatus, error) {
 	response, err := c.Post("/pages/systemMonitoring/xdslStatistics/GetxdslStatistics.html", "", nil)
 	if err != nil {
 		return nil, fmt.Errorf("could not get DSL statistics: %w", err)
@@ -89,7 +89,13 @@ func (c *Client) GetXDSLStatistics() ([]byte, error) {
 		return nil, err
 	}
 
-	return data, nil
+	status := &VDSLStatus{}
+	err = status.UnmarshalText(data)
+	if err != nil {
+		return nil, err
+	}
+
+	return status, nil
 }
 
 func (c *Client) requestWithBaseURL(r *http.Request) *http.Request {

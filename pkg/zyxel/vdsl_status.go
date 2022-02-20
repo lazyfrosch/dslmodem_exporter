@@ -2,10 +2,17 @@ package zyxel
 
 import (
 	"bytes"
-	"dslmodem-exporter/pkg/units"
 	"errors"
-	log "github.com/sirupsen/logrus"
+	"github.com/go-kit/log"
+	"github.com/go-kit/log/level"
+	"github.com/lazyfrosch/dslmodem_exporter/pkg/units"
 	"io"
+	"os"
+)
+
+var (
+	// Logger for allowing external routines to inject a log.Logger to this module.
+	Logger = log.NewLogfmtLogger(os.Stdout)
 )
 
 type VDSLStatus struct {
@@ -66,7 +73,7 @@ func (s *VDSLStatus) UnmarshalText(data []byte) error {
 
 		if group >= knownGroups {
 			// TODO: maybe store rest of lines as extra data
-			log.Warnf("found more than %d groups in data", group)
+			_ = level.Warn(Logger).Log("msg", "Found too many groups in data", "group", group)
 			break
 		}
 
@@ -121,7 +128,7 @@ func (s *VDSLStatus) unmarshalStatusText(data []byte) error {
 
 		parts := bytes.SplitN(line, []byte(":"), 2)
 		if len(parts) != 2 {
-			log.WithField("line", string(line)).Warnf("unknown line")
+			_ = level.Warn(Logger).Log("msg", "Found unknown line in data", "line", string(line))
 			continue
 		}
 
@@ -145,10 +152,7 @@ func (s *VDSLStatus) unmarshalStatusText(data []byte) error {
 				return err
 			}
 		default:
-			log.WithFields(log.Fields{
-				"key":   key,
-				"value": string(value),
-			}).Warn("unknown field in status")
+			_ = level.Warn(Logger).Log("msg", "Found unknown field in data", "key", key, "line", string(line))
 		}
 	}
 
@@ -171,7 +175,7 @@ func (s *VDSLStatus) unmarshalPortDetailsText(data []byte) error {
 
 		parts := bytes.SplitN(line, []byte(":"), 2)
 		if len(parts) != 2 {
-			log.WithField("line", string(line)).Warnf("unknown line")
+			_ = level.Warn(Logger).Log("msg", "Found unknown line in data", "line", string(line))
 			continue
 		}
 
@@ -215,10 +219,8 @@ func (s *VDSLStatus) unmarshalPortDetailsText(data []byte) error {
 		case "Trellis Coding", "Actual INP":
 			// ignore
 		default:
-			log.WithFields(log.Fields{
-				"key":    key,
-				"values": []string{string(values[0]), string(values[1])},
-			}).Warn("unknown field in status")
+			_ = level.Warn(Logger).Log("msg", "Found unknown field in data",
+				"key", key, "line", []string{string(values[0]), string(values[1])})
 		}
 
 		// check both errors
