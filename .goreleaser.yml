@@ -1,0 +1,48 @@
+# See documentation at https://goreleaser.com
+before:
+  hooks:
+    - go mod download
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goarch:
+      - amd64
+      - arm64
+    goos:
+      - linux
+      - windows
+    ldflags:
+      - >-
+        -s -w
+        -X github.com/prometheus/common/version.Version={{.Version}}
+        -X github.com/prometheus/common/version.Revision={{.Commit}}
+        -X github.com/prometheus/common/version.Branch={{.Branch}}
+        -X github.com/prometheus/common/version.BuildUser=goreleaser
+        -X github.com/prometheus/common/version.BuildDate={{.CommitDate}}
+dockers:
+  - image_templates:
+      - ghcr.io/lazyfrosch/dslmodem_exporter
+    use: buildx
+    build_flag_templates:
+      - --platform=linux/amd64
+      - --label=org.opencontainers.image.title={{ .ProjectName }}
+      - --label=org.opencontainers.image.description={{ .ProjectName }}
+      - --label=org.opencontainers.image.url=https://github.com/lazyfrosch/{{ .ProjectName }}
+      - --label=org.opencontainers.image.source=https://github.com/lazyfrosch/{{ .ProjectName }}
+      - --label=org.opencontainers.image.version={{ .Version }}
+      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+      - --label=org.opencontainers.image.licenses=Apache-2.0
+release:
+  github: {}
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: '{{ .Version }}-SNAPSHOT-{{.ShortCommit}}'
+changelog:
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^ci:'
+      - '^goreleaser:'
