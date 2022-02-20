@@ -1,0 +1,84 @@
+============================================================================
+    VDSL Training Status:   Showtime
+                    Mode:   VDSL2 Annex B
+            VDSL Profile:   Profile 17a
+            Traffic Type:   PTM Mode
+             Link Uptime:   41 days: 20 hours: 46 minutes
+============================================================================
+       VDSL Port Details       Upstream         Downstream
+               Line Rate:     36.998 Mbps      116.799 Mbps
+    Actual Net Data Rate:     36.999 Mbps      116.800 Mbps
+          Trellis Coding:         ON                ON
+              SNR Margin:        9.5 dB           11.6 dB
+            Actual Delay:          0 ms              0 ms
+          Transmit Power:      - 3.7 dBm          14.1 dBm
+           Receive Power:      -10.2 dBm           6.6 dBm
+              Actual INP:       45.0 symbols      46.0 symbols
+       Total Attenuation:        6.5 dB            7.6 dB
+Attainable Net Data Rate:     38.997 Mbps      135.971 Mbps
+============================================================================
+      VDSL Band Status    U0      U1      U2      U3      D1      D2      D3
+  Line Attenuation(dB):  2.4     7.7    12.2     N/A     5.6    10.5    15.6
+Signal Attenuation(dB):  2.4     7.2    11.3     N/A     6.1    10.4    15.6
+        SNR Margin(dB):  9.6     9.4     9.5     N/A    12.1    11.4    11.4
+   Transmit Power(dBm):-12.8   - 5.1   -12.2     N/A    12.0     7.9     6.9
+============================================================================
+
+            VDSL Counters
+
+           Downstream        Upstream
+Since Link time = 46 min 59 sec
+FEC:		105303		158830
+CRC:		86		1
+ES:		55		1
+SES:		0		0
+UAS:		0		0
+LOS:		0		0
+LOF:		0		0
+LOM:		0		0
+Latest 15 minutes time = 7 min 3 sec
+FEC:		2		18
+CRC:		0		0
+ES:		0		0
+SES:		0		0
+UAS:		0		0
+LOS:		0		0
+LOF:		0		0
+LOM:		0		0
+Previous 15 minutes time = 15 min 0 sec
+FEC:		0		55
+CRC:		0		0
+ES:		0		0
+SES:		0		0
+UAS:		0		0
+LOS:		0		0
+LOF:		0		0
+LOM:		0		0
+Latest 1 day time = 11 hours 22 min 3 sec
+FEC:		813		1905
+CRC:		0		0
+ES:		0		0
+SES:		0		0
+UAS:		0		0
+LOS:		0		0
+LOF:		0		0
+LOM:		0		0
+Previous 1 day time = 24 hours 0 sec
+FEC:		2399		4077
+CRC:		3		0
+ES:		2		0
+SES:		0		0
+UAS:		0		0
+LOS:		0		0
+LOF:		0		0
+LOM:		0		0
+Total time = 1 days 11 hours 22 min 3 sec
+FEC:		486858		970282
+CRC:		1533		35
+ES:		84		22
+SES:		28		8
+UAS:		863		842
+LOS:		3		0
+LOF:		17		0
+LOM:		0		0
+============================================================================
