@@ -1,14 +1,15 @@
 package zyxel
 
 import (
-	"github.com/stretchr/testify/assert"
-	"io/ioutil"
+	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestVDSLStatus_UnmarshalText(t *testing.T) {
 	var status VDSLStatus
-	data, err := ioutil.ReadFile("testdata/example-vdsl.txt")
+	data, err := os.ReadFile("testdata/example-vdsl.txt")
 	assert.NoError(t, err)
 
 	err = status.UnmarshalText(data)
