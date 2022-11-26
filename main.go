@@ -1,6 +1,9 @@
 package main
 
 import (
+	"net/http"
+	"os"
+
 	"github.com/go-kit/log/level"
 	"github.com/lazyfrosch/dslmodem_exporter/pkg/zyxel"
 	"github.com/prometheus/client_golang/prometheus"
@@ -11,8 +14,6 @@ import (
 	"github.com/prometheus/exporter-toolkit/web"
 	webflag "github.com/prometheus/exporter-toolkit/web/kingpinflag"
 	"gopkg.in/alecthomas/kingpin.v2"
-	"net/http"
-	"os"
 )
 
 const (
@@ -34,6 +35,13 @@ func main() {
 				Default("1234").Envar("DSLEXPORTER_MODEM_PASSWORD").String()
 		interval = kingpin.Flag("dslmodem.interval", "Interval to pull data from the modem. (env:DSLEXPORTER_MODEM_INTERVAL)").
 				Default("15s").Envar("DSLEXPORTER_MODEM_INTERVAL").Duration()
+
+		readTimeout = kingpin.Flag("http.read-timeout", "Timeout for reading from HTTP sockets").
+				Default("5s").Envar("HTTP_READ_TIMEOUT").Duration()
+		writeTimeout = kingpin.Flag("http.write-timeout", "Timeout for reading from HTTP sockets").
+				Default("5s").Envar("HTTP_WRITE_TIMEOUT").Duration()
+		idleTimeout = kingpin.Flag("http.idle-timeout", "Timeout for reading from HTTP sockets").
+				Default("120s").Envar("HTTP_IDLE_TIMEOUT").Duration()
 	)
 
 	promlogConfig := &promlog.Config{}
@@ -62,7 +70,14 @@ func main() {
 	http.HandleFunc("/", homepage)
 	http.Handle(*metricsPath, promhttp.Handler())
 
-	srv := &http.Server{Addr: *listenAddress}
+	srv := &http.Server{
+		Addr:              *listenAddress,
+		ReadTimeout:       *readTimeout,
+		ReadHeaderTimeout: *readTimeout,
+		WriteTimeout:      *writeTimeout,
+		IdleTimeout:       *idleTimeout,
+	}
+
 	if err := web.ListenAndServe(srv, *webConfig, logger); err != nil {
 		_ = level.Error(logger).Log("msg", "Error starting HTTP server", "err", err)
 		os.Exit(1)

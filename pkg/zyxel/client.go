@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
@@ -47,7 +46,7 @@ func NewClient(baseURL, username, password string) (*Client, error) {
 
 // Login into the DSL modems admin interface.
 //
-//  /login/login-page.cgi
+//	/login/login-page.cgi
 func (c *Client) Login() error {
 	data := url.Values{}
 	data.Set("AuthName", c.Username)
@@ -71,7 +70,7 @@ func (c *Client) Login() error {
 
 // GetXDSLStatistics returns the raw
 //
-//  /pages/systemMonitoring/xdslStatistics/GetxdslStatistics.html
+//	/pages/systemMonitoring/xdslStatistics/GetxdslStatistics.html
 func (c *Client) GetXDSLStatistics() (*VDSLStatus, error) {
 	response, err := c.Post("/pages/systemMonitoring/xdslStatistics/GetxdslStatistics.html", "", nil)
 	if err != nil {
@@ -84,7 +83,7 @@ func (c *Client) GetXDSLStatistics() (*VDSLStatus, error) {
 		return nil, fmt.Errorf("server responded with non-ok status: %s", response.Status)
 	}
 
-	data, err := ioutil.ReadAll(response.Body)
+	data, err := io.ReadAll(response.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -133,7 +132,7 @@ func (t *Transport) RoundTrip(r *http.Request) (*http.Response, error) {
 
 	// Load body to be able to parse it
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return resp, fmt.Errorf("could not read body: %w", err)
 	}
