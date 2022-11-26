@@ -22,9 +22,7 @@ const (
 
 func main() {
 	var (
-		webConfig     = webflag.AddFlags(kingpin.CommandLine)
-		listenAddress = kingpin.Flag("web.listen-address", "Address to listen on for web interface and telemetry.").
-				Default(":9120").String()
+		webConfig   = webflag.AddFlags(kingpin.CommandLine, ":9120")
 		metricsPath = kingpin.Flag("web.telemetry-path", "Path under which to expose metrics.").Default("/metrics").String()
 
 		url = kingpin.Flag("dslmodem.url", "URL to the DSL modem. (env:DSLEXPORTER_MODEM_URL)").
@@ -66,19 +64,17 @@ func main() {
 
 	prometheus.MustRegister(version.NewCollector("dslmodem_exporter"))
 
-	_ = level.Info(logger).Log("msg", "Listening on address", "address", *listenAddress)
 	http.HandleFunc("/", homepage)
 	http.Handle(*metricsPath, promhttp.Handler())
 
 	srv := &http.Server{
-		Addr:              *listenAddress,
 		ReadTimeout:       *readTimeout,
 		ReadHeaderTimeout: *readTimeout,
 		WriteTimeout:      *writeTimeout,
 		IdleTimeout:       *idleTimeout,
 	}
 
-	if err := web.ListenAndServe(srv, *webConfig, logger); err != nil {
+	if err := web.ListenAndServe(srv, webConfig, logger); err != nil {
 		_ = level.Error(logger).Log("msg", "Error starting HTTP server", "err", err)
 		os.Exit(1)
 	}
