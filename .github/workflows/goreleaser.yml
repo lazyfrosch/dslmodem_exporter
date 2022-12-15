@@ -34,7 +34,7 @@ jobs:
 
       - name: Run goreleaser in snapshot mode
         if: success() && ! startsWith(github.ref, 'refs/tags/v')
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v4
         with:
           version: latest
           args: release --rm-dist --snapshot
@@ -54,7 +54,7 @@ jobs:
 
       - name: Run GoReleaser in release mode
         if: success() && startsWith(github.ref, 'refs/tags/v')
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v4
         with:
           version: latest
           args: release --rm-dist
