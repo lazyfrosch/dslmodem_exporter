@@ -47,7 +47,7 @@ jobs:
 
       - name: Upload assets for snapshots
         if: success() && ! startsWith(github.ref, 'refs/tags/v')
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dslmodem_exporter
           path: dist/*
